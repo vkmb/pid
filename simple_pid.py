@@ -1,6 +1,10 @@
-from math import sin, pi
+"""
+Known errors 
+line 43 : RuntimeWarning: overflow encountered in double_scalars 
+line 43 : RuntimeWarning: invalid value encountered in double_scalars
+"""
 import matplotlib.pyplot as plt
-
+from numpy import isinf, isnan
 
 class PID:
     
@@ -25,8 +29,8 @@ class PID:
         self.errors = [0]
         
     
-    def integral_antiwarp(self):
-        if abs(sum(self.errors[:-2])/sum(self.errors)) < .1:
+    def integral_antiwarp(self):        
+        if sum(self.errors) !=0 and abs(sum(self.errors[:-2])/sum(self.errors)) < .1:
             return self.errors[:2]
         return self.errors
 
@@ -58,7 +62,6 @@ class PID:
         return self.refernce, self.outputs, self.errors, [i/100 for i in range(len(self.outputs))]
     
     def manage_data(self):
-        
         if len(self.outputs)>200:
             temp_out = self.outputs[100:]
             self.outputs.clear()
